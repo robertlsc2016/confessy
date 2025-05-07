@@ -1,0 +1,13 @@
+services:
+  confessy :
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: confessy
+    volumes:
+      - ./database:/app/database
+    restart: always
+    ports:
+      - "127.0.0.1:8080:8080"
+    env_file:
+      - .env
