@@ -28,6 +28,10 @@ app.use(bodyParser.json());
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + "/public"));
+app.use((req, res, next) => {
+  res.setHeader('ngrok-skip-browser-warning', '69420'); // O valor pode ser qualquer string
+  next();
+});
 
 app.get("/", (req, res) => {
   Perguntas.findAll({
@@ -122,6 +126,6 @@ app.post("/enviarreposta", (req, res) => {
     });
 });
 
-app.listen(process.env.PORT || 8081, () => {
+app.listen(process.env.PORT || 8081, "0.0.0.0", () => {
   console.log(`http://localhost:8081`);
 });
