@@ -3,3 +3,5 @@ node_modules
 .env_
 .env__
 .vscode
+
+*.sqlite
