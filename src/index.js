@@ -26,10 +26,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.set("view engine", "ejs");
+app.set("views", "./src/views");
 
 app.use(express.static(__dirname + "/public"));
+
 app.use((req, res, next) => {
-  res.setHeader('ngrok-skip-browser-warning', '69420'); // O valor pode ser qualquer string
+  res.setHeader("ngrok-skip-browser-warning", "69420"); // O valor pode ser qualquer string
   next();
 });
 
@@ -86,30 +88,48 @@ app.get("/confissao/:id", (req, res) => {
 });
 
 app.post("/salvarpergunta", (req, res) => {
+  // Gerando ID aleatório
+  // const idConfissao = Math.random().toString(36).substr(2, 8);
   let hora_brasilia = moment().tz("America/Sao_Paulo").format();
 
-  let titulo = req.body.title.trim() || "";
-  let description = req.body.description.trim() || "";
-  let name = req.body.name.trim() || "anonymous";
+  // console.log(req)
 
+  const { title, description, name } = req.body;
+
+  // let titulo = req.body.title.trim() || "";
+  // let description = req.body.description.trim() || "";
+  // let name = req.body.name.trim() || "anonymous";
+
+  // Salvando no banco de dados (aqui você pode incluir o ID)
   Perguntas.create({
-    title: titulo,
+    // id: idConfissao, // Incluindo o ID gerado
+    title: title,
     description: description,
-    name: name,
+    name: name || "anonymous",
     datacriacao: hora_brasilia,
   })
-    .then(() => {
-      res.redirect("/");
+    .then((data) => {
+      console.log("Confissão salva com sucesso!");
+      res
+        .status(200)
+        .json({
+          message: "Confissão salva com sucesso!",
+          id: data.dataValues.id,
+        });
+      // res.redirect("/");
     })
     .catch((error) => {
       console.log(error);
+      res.status(500).json({ message: "Confissão salva com sucesso!" });
+
+      // res.redirect("/");
     });
 });
 
 app.post("/enviarreposta", (req, res) => {
   let resposta = req.body.response;
   let perguntaID = req.body.perguntaID;
-  let autorResposta = req.body.autorResposta || "anonymous"
+  let autorResposta = req.body.autorResposta || "anonymous";
   let hora_brasilia = moment().tz("America/Sao_Paulo").format();
 
   Respostas.create({

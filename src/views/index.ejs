@@ -71,6 +71,24 @@
 
             </div>
             <br>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    if ('Notification' in window) {
+                        if (Notification.permission === 'default') {
+                            Notification.requestPermission().then(permission => {
+                                if (permission === 'granted') {
+                                    console.log('Permissão de notificação concedida.');
+                                } else {
+                                    console.log('Permissão de notificação negada.');
+                                }
+                            });
+                        }
+                    } else {
+                        console.log('Navegador não suporta notificações.');
+                    }
+                });
+                </script>
     </body>
     <%- include('partials/topbottom') %>
 

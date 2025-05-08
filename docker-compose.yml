@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: confessy
     volumes:
-      - ./database:/app/database
+      - ./src/database:/app/src/database
     restart: always
     ports:
       - "0.0.0.0:8081:8081"
