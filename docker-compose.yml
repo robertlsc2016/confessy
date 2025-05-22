@@ -6,6 +6,7 @@ services:
     container_name: confessy
     volumes:
       - ./src/database:/app/src/database
+      - /auth_info:/app/auth_info
     restart: always
     ports:
       - "0.0.0.0:8081:8081"
