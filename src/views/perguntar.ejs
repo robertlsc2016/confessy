@@ -81,22 +81,22 @@
                 const { id } = data
                 // O servidor responde com o ID da confissão
                 // Se a requisição for bem-sucedida, notifica o usuário
-                if (Notification.permission === 'granted') {
-                    const notification = new Notification('Nova Confissão feita!', {
-                        body: `Título: ${titulo}\nAutor: ${name}`,
+                // if (Notification.permission === 'granted') {
+                //     const notification = new Notification('Nova Confissão feita!', {
+                //         body: `Título: ${titulo}\nAutor: ${name}`,
 
-                        // icon: '/path/to/your/icon.png' // Opcional, pode remover esta linha se quiser
-                    });
+                //         // icon: '/path/to/your/icon.png' // Opcional, pode remover esta linha se quiser
+                //     });
 
-                    // Quando o usuário clicar na notificação, vai para o link da confissão
-                    notification.onclick = function(event) {
-                        event.preventDefault(); // Evita o comportamento padrão
-                        window.open(`/confissao/${id}`, '_blank');
-                        // window.open("https://www.mozilla.org", "_blank");
+                //     // Quando o usuário clicar na notificação, vai para o link da confissão
+                //     notification.onclick = function(event) {
+                //         event.preventDefault(); // Evita o comportamento padrão
+                //         window.open(`/confissao/${id}`, '_blank');
+                //         // window.open("https://www.mozilla.org", "_blank");
 
 
-                    };
-                }
+                //     };
+                // }
 
                 window.location.href = `/confissao/${id}`;
 
