@@ -6,12 +6,13 @@ const bodyParser = require("body-parser");
 const connection = require("./database/database");
 const Perguntas = require("./database/Perguntas");
 const Respostas = require("./database/Respostas");
-require('dotenv').config()
+require("dotenv").config();
 
 const { sendWhatsAppMessage, initializeWhatsApp } = require("./indexBaileys");
 initializeWhatsApp();
 // Número de destino para as mensagens do WhatsApp (substitua pelo número desejado)
-const WHATSAPP_NUMBER = process.env.STRING_TO_GROUP_WWEBJS // Exemplo: +5511999999999
+const WHATSAPP_NUMBER = process.env.STRING_TO_GROUP_WWEBJS; // Exemplo: +5511999999999
+// const WHATSAPP_NEWSLETTER = process.env.STRING_TO_GROUP_WWEBJS_NEWSLETTER; // Exemplo: +5511999999999
 
 connection
   .authenticate()
@@ -95,6 +96,7 @@ app.post("/salvarpergunta", async (req, res) => {
       novaPergunta.dataValues.id
     }`;
     const result = await sendWhatsAppMessage(WHATSAPP_NUMBER, message);
+    // await sendWhatsAppMessage(WHATSAPP_NEWSLETTER, message);
 
     if (!result.success) {
       console.error("Falha ao enviar mensagem WhatsApp:", result.error);
@@ -132,6 +134,7 @@ app.post("/enviarreposta", async (req, res) => {
     // Enviar mensagem via WhatsApp
     const message = `Nova resposta para a confissão #${perguntaID}!\n\Confissão: ${pergunta.title}\nResposta: ${resposta}\nAutor: ${autorResposta}\nData: ${hora_brasilia}\n\nLink da confissão: https://confessy.pt/confissao/${perguntaID}`;
     const result = await sendWhatsAppMessage(WHATSAPP_NUMBER, message);
+    // await sendWhatsAppMessage(STRING_TO_GROUP_WWEBJS_NEWSLETTER, message);
 
     if (!result.success) {
       console.error("Falha ao enviar mensagem WhatsApp:", result.error);

@@ -49,14 +49,19 @@ async function initializeWhatsApp() {
     }
   });
 
-//   sock.ev.on("messages.upsert", async (m) => {
-//     const msg = m.messages[0];
-//     if (msg.key.remoteJid.endsWith("@g.us")) {
-//       console.log("Mensagem de grupo detectada:");
-//       console.log(`ID do grupo: ${msg.key.remoteJid}`);
-//     }
-//   });
+  // sock.ev.on("messages.upsert", async (m) => {
+  //   const msg = m.messages[0];
+  //   if (msg.key.remoteJid.endsWith("@g.us")) {
+  //     console.log("Mensagem de grupo detectada:");
+  //     console.log(`ID do grupo: ${msg.key.remoteJid}`);
+  //   }
+  // });
 
+  // sock.ev.on("messages.upsert", async (m) => {
+  //   const msg = m.messages[0];
+  //   console.log("Mensagem de grupo detectada:");
+  //   console.log(`ID do grupo: ${msg.key.remoteJid}`);
+  // });
   sock.ev.on("creds.update", saveCreds);
   return sock;
 }
@@ -64,8 +69,8 @@ async function initializeWhatsApp() {
 async function sendWhatsAppMessage(to, message) {
   try {
     const socket = await initializeWhatsApp();
-    const formattedNumber = to.includes("@g.us") ? to : `${to}@g.us`;
-    await socket.sendMessage(formattedNumber, { text: message });
+    await socket.sendMessage(to, { text: message });
+    
     console.log(`Mensagem enviada para ${to}: ${message}`);
     return { success: true, message: "Mensagem enviada com sucesso!" };
   } catch (error) {
