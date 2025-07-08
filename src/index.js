@@ -12,7 +12,7 @@ const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 
 const multer = require("multer");
-const sharp = require("sharp");
+// const sharp = require("sharp");
 const ImageKit = require("imagekit");
 
 const upload = multer(); // usa memória (buffer)
@@ -115,14 +115,17 @@ app.post("/salvarpergunta", upload.single("image"), async (req, res) => {
     if (file) {
       imageId = uuidv4(); // Gera um ID único
 
-      const compressedBuffer = await sharp(file.buffer)
-        .jpeg({ quality: 70 })
-        .toBuffer();
+      // const compressedBuffer = await sharp(file.buffer)
+      //   .jpeg({ quality: 70 })
+      //   .toBuffer();
 
-      const uploadResult = await imagekit.upload({
-        file: compressedBuffer,
-        fileName: `img`, // usa o ID no nome
-      });
+      // const uploadResult = await imagekit.upload({
+      //   file: compressedBuffer,
+      //   fileName: `img`, // usa o ID no nome
+      // });
+
+      const compressedBuffer = file.buffer; // usa buffer original, sem compressão
+
 
       imageUrl = uploadResult.name;
     }
