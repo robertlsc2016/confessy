@@ -1,5 +1,29 @@
 <%- include('partials/header') %>
 
+    <head>
+
+        <meta property="og:image:height" content="900" />
+        <meta property="og:image:width" content="900" />
+        <meta property="og:type" content="website" />
+        <meta charset="UTF-8">
+        <meta property="og:title" content="Título: <%=dadosPergunta.title%>" />
+        <meta property="og:description" content="Descrição: <%=dadosPergunta.description%>" />
+        <title>Confessy - <%=dadosPergunta.title%>
+        </title>
+
+        <% if (dadosPergunta.image_id) { %>
+            <meta property="og:image" content="https://ik.imagekit.io/confessy/<%=dadosPergunta.image_id%>" />
+            <% } else { %>
+                <meta property="og:image" content="/imgs/confessy.png" />
+                <% } %>
+
+
+
+
+
+
+    </head>
+
     <body style="overflow-y: scroll; margin-top: 10vh;">
         <%- include ('partials/navbar') %>
 
