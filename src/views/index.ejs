@@ -54,16 +54,26 @@
                                                                     <%=cont%>
                                         </p>
                                     </div>
-
-
                                     <a href='/confissao/<%=pergunta.id%>' target="_blank">
 
-                                        <h3>
-                                            <%=pergunta.title%>
-                                        </h3>
+                                        <%if(pergunta.image_id) {%>
+                                            <div
+                                                style=" height: 96px; width: 96px; display: flex; justify-content: flex-start; align-items: center;">
+
+                                                <img src="https://ik.imagekit.io/confessy/<%=pergunta.image_id%>"
+                                                    alt="Imagem Anexada"
+                                                    style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                            </div>
+
+                                            <% } %>
 
 
+
+                                                <h3>
+                                                    <%=pergunta.title%>
+                                                </h3>
                                     </a>
+
                                     <p
                                         style="right: 0; top:0; padding : 5px 10px 0 0; color: gray; margin: 0; font-size: 0.7rem;">
                                         <%=pergunta.name%> -

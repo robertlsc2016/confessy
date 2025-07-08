@@ -54,8 +54,18 @@
                 <%if(dadosPergunta.image_id) {%>
                     <div>
                         <p>anexos: </p>
-                        <img src="https://ik.imagekit.io/confessy/<%=dadosPergunta.image_id%>" alt="Imagem Anexada"
-                            style="max-width: 100%; max-height: 300px; object-fit: cover;">
+                        <div id="galeria">
+                            <img id="imagem-anexada" src="https://ik.imagekit.io/confessy/<%=dadosPergunta.image_id%>"
+                                style="max-width: 100%; max-height: 300px; object-fit: cover;">
+                        </div>
+
+                        <!-- <div id="galeria">
+                            <a href="https://ik.imagekit.io/confessy/<%=dadosPergunta.image_id%>" data-pswp-width="900"
+                                data-pswp-height="900" target="_blank">
+                                <img src="https://ik.imagekit.io/confessy/<%=dadosPergunta.image_id%>"
+                                    alt="Imagem Anexada" style="max-width: 100%; max-height: 300px; object-fit: cover;">
+                            </a>
+                        </div> -->
 
                     </div>
 
@@ -155,8 +165,31 @@
 
                                             </div>
             </div>
+            <link rel="stylesheet" href="https://unpkg.com/photoswipe@5/dist/photoswipe.css">
+            <link rel="stylesheet" href="https://unpkg.com/viewerjs/dist/viewer.min.css">
+            <script src="https://unpkg.com/viewerjs/dist/viewer.min.js"></script>
+            <script>
+                const galeria = document.getElementById('galeria');
+                const viewer = new Viewer(galeria, {
+                    toolbar: false,
+                    navbar: false,
+                    title: false,
+                    viewed() {
+                        viewer.zoomTo(0.3);
+                    }
+                });
+            </script>
 
+            <!-- <script type="module">
+                import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.min.js';
 
+                const lightbox = new PhotoSwipeLightbox({
+                    gallery: '#galeria',
+                    children: 'a',
+                    pswpModule: () => import('https://unpkg.com/photoswipe@5/dist/photoswipe.esm.min.js')
+                });
+                lightbox.init();
+            </script> -->
     </body>
 
     <%- include('partials/footer') %>
