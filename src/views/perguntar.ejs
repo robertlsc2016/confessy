@@ -1,129 +1,138 @@
 <%- include('partials/header') %>
 
-<body style="margin-top: 10vh;">
-    <%- include('partials/navbar') %>
+    <body style="margin-top: 10vh;">
+        <%- include('partials/navbar') %>
 
-    <div class="container">
-        <div class="card" id="formulario-pergunta">
-            <div class="card-header">
-                <h3>Realizar Confissão</h3>
+            <div class="container">
+                <div class="card" id="formulario-pergunta">
+                    <div class="card-header">
+                        <h3>Realizar Confissão</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <form id="form_question" method="post" enctype="multipart/form-data" action="/salvarpergunta">
+
+                            <label for="title_question">Título da Confissão</label>
+                            <input type="text" class="form-control" name="title" id="title" placeholder="Título da confissão"
+                                id="title_question" required>
+                            <br>
+
+                            <label for="description">O que você quer confessar?</label>
+                            <textarea placeholder="Escreva sua confissão aqui" class="form-control" name="description"
+                                id="description" required></textarea>
+                            <br>
+
+                            <label for="image">Imagem (opcional)</label>
+                            <input type="file" class="form-control" name="image" id="image" accept="image/*" />
+                            <br>
+
+                            <label for="name">Seu Nome (opcional)</label>
+                            <input type="text" class="form-control" name="name" placeholder="anonymous" id="name">
+                            <br>
+
+
+                            <button class="btn btn-dark" id="send_question" type="submit">Confessar</button>
+
+                            <!-- <button class="btn btn-dark" id="send_question" type="button"
+                                onclick="salvarPergunta()">Confessar</button> -->
+                        </form>
+                    </div>
+                </div>
             </div>
 
-            <div class="card-body">
-                <form id="form_question" method="post">
-                    <label for="title_question">Título da Confissão</label>
-                    <input type="text" class="form-control" name="title" placeholder="Título da confissão"
-                        id="title_question" required>
-                    <br>
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="js/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+                integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+                crossorigin="anonymous"></script>
+            <script src="js/js/bootstrap.js"></script>
 
-                    <label for="description">O que você quer confessar?</label>
-                    <textarea placeholder="Escreva sua confissão aqui" class="form-control" name="description"
-                        id="description" required></textarea>
-                    <br>
-
-                    <label for="name">Seu Nome (opcional)</label>
-                    <input type="text" class="form-control" name="name" placeholder="anonymous" id="name">
-                    <br>
-
-                    <button class="btn btn-dark" id="send_question" type="button" onclick="salvarPergunta()">Confessar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="js/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="js/js/bootstrap.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission().then(permission => {
-                    console.log('Permissão de notificação:', permission);
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    if ('Notification' in window && Notification.permission === 'default') {
+                        Notification.requestPermission().then(permission => {
+                            console.log('Permissão de notificação:', permission);
+                        });
+                    }
                 });
-            }
-        });
 
-        function gerarIdAleatorio() {
-            // Gerando um ID aleatório de 8 caracteres
-            return Math.random().toString(36).substr(2, 8);
-        }
+                function gerarIdAleatorio() {
+                    // Gerando um ID aleatório de 8 caracteres
+                    return Math.random().toString(36).substr(2, 8);
+                }
 
-        async function salvarPergunta() {
-            const titulo = document.getElementById('title_question').value.trim();
-            const description = document.getElementById('description').value.trim();
-            const name = document.getElementById('name')?.value.trim() || "anonymous";
+                async function salvarPergunta() {
+                    const titulo = document.getElementById('title_question').value.trim();
+                    const description = document.getElementById('description').value.trim();
+                    const name = document.getElementById('name')?.value.trim() || "anonymous";
 
-            if (!titulo) {
-                return alertError('title_question', 'O título da confissão não pode ser vazio ou conter apenas espaços.');
-            }
+                    if (!titulo) {
+                        return alertError('title_question', 'O título da confissão não pode ser vazio ou conter apenas espaços.');
+                    }
 
-            if (!description) {
-                return alertError('description', 'A descrição da confissão não pode ser vazia ou conter apenas espaços.');
-            }
-            
-            fetch('/salvarpergunta', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    title: titulo,
-                    description: description,
-                    name: name
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const { id } = data
-                // O servidor responde com o ID da confissão
-                // Se a requisição for bem-sucedida, notifica o usuário
-                // if (Notification.permission === 'granted') {
-                //     const notification = new Notification('Nova Confissão feita!', {
-                //         body: `Título: ${titulo}\nAutor: ${name}`,
+                    if (!description) {
+                        return alertError('description', 'A descrição da confissão não pode ser vazia ou conter apenas espaços.');
+                    }
 
-                //         // icon: '/path/to/your/icon.png' // Opcional, pode remover esta linha se quiser
-                //     });
+                    fetch('/salvarpergunta', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            title: titulo,
+                            description: description,
+                            name: name
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            const { id } = data
+                            // O servidor responde com o ID da confissão
+                            // Se a requisição for bem-sucedida, notifica o usuário
+                            // if (Notification.permission === 'granted') {
+                            //     const notification = new Notification('Nova Confissão feita!', {
+                            //         body: `Título: ${titulo}\nAutor: ${name}`,
 
-                //     // Quando o usuário clicar na notificação, vai para o link da confissão
-                //     notification.onclick = function(event) {
-                //         event.preventDefault(); // Evita o comportamento padrão
-                //         window.open(`/confissao/${id}`, '_blank');
-                //         // window.open("https://www.mozilla.org", "_blank");
+                            //         // icon: '/path/to/your/icon.png' // Opcional, pode remover esta linha se quiser
+                            //     });
+
+                            //     // Quando o usuário clicar na notificação, vai para o link da confissão
+                            //     notification.onclick = function(event) {
+                            //         event.preventDefault(); // Evita o comportamento padrão
+                            //         window.open(`/confissao/${id}`, '_blank');
+                            //         // window.open("https://www.mozilla.org", "_blank");
 
 
-                //     };
-                // }
+                            //     };
+                            // }
 
-                window.location.href = `/confissao/${id}`;
+                            window.location.href = `/confissao/${id}`;
 
 
-                // window.location.href = `/confissao/${id}`;  // Ou algum outro comportamento desejado
+                            // window.location.href = `/confissao/${id}`;  // Ou algum outro comportamento desejado
 
-                // Redireciona para a págsina principal
-            })
-            .catch(err => {
-                console.error('Erro ao salvar a confissão:', err);
-                alertError("", "Erro ao salvar a confissão. Tente novamente")
-            });
+                            // Redireciona para a págsina principal
+                        })
+                        .catch(err => {
+                            console.error('Erro ao salvar a confissão:', err);
+                            alertError("", "Erro ao salvar a confissão. Tente novamente")
+                        });
 
-        }
+                }
 
-        function alertError(elementId, msgError) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Oops...',
-                text: msgError,
-                timer: 3000,
-                timerProgressBar: true
-            });
-            document.getElementById(elementId).value = '';
-            document.getElementById(elementId).focus();
-        }
-    </script>
-</body>
+                function alertError(elementId, msgError) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: msgError,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    document.getElementById(elementId).value = '';
+                    document.getElementById(elementId).focus();
+                }
+            </script>
+    </body>
 
-</html>
+    </html>

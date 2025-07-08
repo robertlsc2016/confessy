@@ -6,7 +6,22 @@ const bodyParser = require("body-parser");
 const connection = require("./database/database");
 const Perguntas = require("./database/Perguntas");
 const Respostas = require("./database/Respostas");
+
+const { v4: uuidv4 } = require("uuid");
+
 require("dotenv").config();
+
+const multer = require("multer");
+const sharp = require("sharp");
+const ImageKit = require("imagekit");
+
+const upload = multer(); // usa memória (buffer)
+
+const imagekit = new ImageKit({
+  publicKey: "public_4un/BnXuSEkZF8eP7Ja+d0v/7qs=",
+  privateKey: "private_ukFcUoR3fw91LPYFDZggCvbhlzE=",
+  urlEndpoint: "https://ik.imagekit.io/confessy/",
+});
 
 // const { sendWhatsAppMessage, initializeWhatsApp } = require("./indexBaileys");
 // initializeWhatsApp();
@@ -57,6 +72,8 @@ app.get("/confissao/:id", (req, res) => {
 
   Perguntas.findOne({ raw: true, where: { id: id } }).then((dadosPergunta) => {
     if (dadosPergunta) {
+      console.log(dadosPergunta);
+
       Respostas.findAll({
         order: [["id", "DESC"]],
         where: { perguntaID: id },
@@ -77,36 +94,57 @@ app.get("/confissao/:id", (req, res) => {
   });
 });
 
-app.post("/salvarpergunta", async (req, res) => {
+app.post("/salvarpergunta", upload.single("image"), async (req, res) => {
+  const moment = require("moment-timezone");
   let hora_brasilia = moment().tz("America/Sao_Paulo").format();
+
   const { title, description, name } = req.body;
+  const file = req.file;
+
+  console.log("Dados recebidos:", {
+    title,
+    description,
+    name,
+    hasImage: !!file,
+  });
+
+  let imageUrl = null;
+  let imageId = null;
 
   try {
+    if (file) {
+      imageId = uuidv4(); // Gera um ID único
+
+      const compressedBuffer = await sharp(file.buffer)
+        .jpeg({ quality: 70 })
+        .toBuffer();
+
+      const uploadResult = await imagekit.upload({
+        file: compressedBuffer,
+        fileName: `img`, // usa o ID no nome
+      });
+
+      imageUrl = uploadResult.name;
+    }
+
     const novaPergunta = await Perguntas.create({
-      title: title,
-      description: description,
+      title,
+      description,
       name: name || "anonymous",
       datacriacao: hora_brasilia,
+      image_id: imageUrl, // só se tiver essa coluna no banco
     });
 
-    // Enviar mensagem via WhatsApp
-    // const message = `Nova confissão recebida!\n\nTítulo: ${title}\nDescrição: ${description}\nAutor: ${
-    //   name || "anonymous"
-    // }\nData: ${hora_brasilia}\n\nLink da confissão: https://confessy.pt/confissao/${
-    //   novaPergunta.dataValues.id
-    // }`;
+    res.redirect(`/confissao/${novaPergunta.dataValues.id}`);
 
-    // const result = await sendWhatsAppMessage(WHATSAPP_NUMBER, message);
-    // // await sendWhatsAppMessage(WHATSAPP_NEWSLETTER, message);
-
-    // if (!result.success) {
-    //   console.error("Falha ao enviar mensagem WhatsApp:", result.error);
-    // }
-
-    res.status(200).json({
-      message: "Confissão salva com sucesso!",
-      id: novaPergunta.dataValues.id,
-    });
+    // res.status(200).json({
+    //   message: "Confissão salva com sucesso!",
+    //   id: novaPergunta.dataValues.id,
+    //   image: {
+    //     id: imageId,
+    //     url: imageUrl,
+    //   },
+    // });
   } catch (error) {
     console.error("Erro ao salvar confissão:", error);
     res

@@ -18,11 +18,16 @@
     "dotenv": "^16.5.0",
     "ejs": "^3.1.6",
     "express": "^4.17.2",
+    "express-fileupload": "^1.5.2",
+    "imagekit": "^6.0.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
+    "multer": "^2.0.1",
     "pino": "^9.7.0",
     "sequelize": "^6.37.7",
+    "sharp": "^0.32.6",
     "sqlite3": "^5.1.7",
-    "sweetalert2": "^11.4.4"
+    "sweetalert2": "^11.4.4",
+    "uuid": "^11.1.0"
   }
 }

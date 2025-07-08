@@ -9,11 +9,13 @@
                         <%=dadosPergunta.title%>
 
                     </h2>
-                    <p style="right: 0; top:0; padding : 5px 10px 0 0; color: gray; margin: 0; font-size: 0.7rem;"><%=dadosPergunta.name%></p>
-                    <p  style="right: 0; top:0; padding : 5px 10px 0 0; color: gray; margin: 0; font-size: 0.7rem;">
-                        
-                        <%=dadosPergunta?.datacriacao?.slice(0,10)%> | 
-                        <%=dadosPergunta?.datacriacao?.slice(11,19)%>
+                    <p style="right: 0; top:0; padding : 5px 10px 0 0; color: gray; margin: 0; font-size: 0.7rem;">
+                        <%=dadosPergunta.name%>
+                    </p>
+                    <p style="right: 0; top:0; padding : 5px 10px 0 0; color: gray; margin: 0; font-size: 0.7rem;">
+
+                        <%=dadosPergunta?.datacriacao?.slice(0,10)%> |
+                            <%=dadosPergunta?.datacriacao?.slice(11,19)%>
 
                     </p>
                 </div>
@@ -22,96 +24,112 @@
                     <p style="margin: 0;">
                         <%=dadosPergunta.description%>
                     </p>
-                </div>
-                <hr style="margin-top: 0;">
 
-                <div class="container">
-                    <h3>Respostas:</h3>
                 </div>
 
-
-                <%if(dadosResposta.length > 0) {%>
-
-                    <%dadosResposta.forEach(dadosResposta => { %>
-                        <br>
-
-                        <div class="card border-dark">
-                            <p class="position-absolute" style="right: 0; top:0; padding : 5px 10px 0 0; color: gray;">
-                                <%=dadosResposta.datacriacao.slice(0,10).split('-').reverse().join('/')%> - 
-                                <%=dadosResposta.datacriacao.slice(11,19)%>
-
-                            </p>
-
-                            <div class="card-body">
-
-                                <div class="container row">
-
-                                    <p  style="margin: 0; font-size: 1.5rem">
-                                        <%=dadosResposta.body%>
-                                    </p>
-                                </div>
-        
-                                <div class="container row">
-                                    <p style="margin: 4% 0 0 0; color: gray; font-size: 0.7rem;">
-                                        <%=dadosResposta.autorResposta%>
-                                    </p>
-                                </div>
-        
-        
-        
-                            </div>
-        
-                        </div>
-    
-                    <% }) %>
-
-                <%} else{ %>
-                    <div class="d-flex justify-content-center align-items-center container">
-                        <h3>Nehuma resposta foi publicada</h3>
+                <%if(dadosPergunta.image_id) {%>
+                    <div>
+                        <p>anexos: </p>
+                        <img src="https://ik.imagekit.io/confessy/<%=dadosPergunta.image_id%>" alt="Imagem Anexada"
+                            style="max-width: 100%; max-height: 300px; object-fit: cover;">
 
                     </div>
-                <%}%>
+
+                    <% } %>
 
 
-
-
-
-
-                <div class="fixed-bottom bg-dark d-flex justify-content-center align-items-center col-12"
-                    id="enviarResposta">
-
-                    <form class="container  d-flex justify-content-between align-items-end" id="envResp-container"
-                        method="POST" action='/enviarreposta'>
+                        <hr style="margin-top: 0;">
 
                         <div class="container">
-
-                            <div class="input-group" id="input-group-name">
-                                <span class="d-flex justify-content-center align-items-center input-group-text col-md-4 col-sm-4 col-4 nome_pergunta " id="nome_pergunta">Nome (opcional)</span>
-
-                                <input type="text" class="form-control" name="autorResposta" placeholder="anonymous">
-                            </div>
-
-
-                            <div class="input-group">
-                                <span class="d-flex input-group-text col-md-2 col-sm-2 col-4 justify-content-center align-items-center "
-                                    id="resposta" >Resposta</span>
-                                    
-                                <textarea class="form-control" style="resize: none" name="response" required></textarea>
-                            </div>
-
-
-                            <input type="hidden" value="<%=dadosPergunta.id%>" name="perguntaID">
+                            <h3>Respostas:</h3>
                         </div>
 
-                        <div>
 
-                            <button class="btn btn-success" id="envRespTextArea-btn">Enviar Resposta</button>
+                        <%if(dadosResposta.length> 0) {%>
 
-                        </div>
+                            <%dadosResposta.forEach(dadosResposta=> { %>
+                                <br>
 
-                    </form>
+                                <div class="card border-dark">
+                                    <p class="position-absolute"
+                                        style="right: 0; top:0; padding : 5px 10px 0 0; color: gray;">
+                                        <%=dadosResposta.datacriacao.slice(0,10).split('-').reverse().join(' /')%> -
+                                            <%=dadosResposta.datacriacao.slice(11,19)%>
 
-                </div>
+                                    </p>
+
+                                    <div class="card-body">
+
+                                        <div class="container row">
+
+                                            <p style="margin: 0; font-size: 1.5rem">
+                                                <%=dadosResposta.body%>
+                                            </p>
+                                        </div>
+
+                                        <div class="container row">
+                                            <p style="margin: 4% 0 0 0; color: gray; font-size: 0.7rem;">
+                                                <%=dadosResposta.autorResposta%>
+                                            </p>
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+
+                                <% }) %>
+
+                                    <%} else{ %>
+                                        <div class="d-flex justify-content-center align-items-center container">
+                                            <h3>Nehuma resposta foi publicada</h3>
+
+                                        </div>
+                                        <%}%>
+
+                                            <div class="fixed-bottom bg-dark d-flex justify-content-center align-items-center col-12"
+                                                id="enviarResposta">
+
+                                                <form class="container  d-flex justify-content-between align-items-end"
+                                                    id="envResp-container" method="POST" action='/enviarreposta'>
+
+                                                    <div class="container">
+
+                                                        <div class="input-group" id="input-group-name">
+                                                            <span
+                                                                class="d-flex justify-content-center align-items-center input-group-text col-md-4 col-sm-4 col-4 nome_pergunta "
+                                                                id="nome_pergunta">Nome (opcional)</span>
+
+                                                            <input type="text" class="form-control" name="autorResposta"
+                                                                placeholder="anonymous">
+                                                        </div>
+
+
+                                                        <div class="input-group">
+                                                            <span
+                                                                class="d-flex input-group-text col-md-2 col-sm-2 col-4 justify-content-center align-items-center "
+                                                                id="resposta">Resposta</span>
+
+                                                            <textarea class="form-control" style="resize: none"
+                                                                name="response" required></textarea>
+                                                        </div>
+
+
+                                                        <input type="hidden" value="<%=dadosPergunta.id%>"
+                                                            name="perguntaID">
+                                                    </div>
+
+                                                    <div>
+
+                                                        <button class="btn btn-success" id="envRespTextArea-btn">Enviar
+                                                            Resposta</button>
+
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
             </div>
 
 
