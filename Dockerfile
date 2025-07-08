@@ -1,5 +1,5 @@
 # Use a imagem oficial do Node.js com a versão mais recente
-FROM node:23-slim
+FROM node:20-bullseye
 
 # Configure o diretório de trabalho
 WORKDIR /app
