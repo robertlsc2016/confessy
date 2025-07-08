@@ -72,8 +72,6 @@ app.get("/confissao/:id", (req, res) => {
 
   Perguntas.findOne({ raw: true, where: { id: id } }).then((dadosPergunta) => {
     if (dadosPergunta) {
-      console.log(dadosPergunta);
-
       Respostas.findAll({
         order: [["id", "DESC"]],
         where: { perguntaID: id },
@@ -100,13 +98,6 @@ app.post("/salvarpergunta", upload.single("image"), async (req, res) => {
 
   const { title, description, name } = req.body;
   const file = req.file;
-
-  console.log("Dados recebidos:", {
-    title,
-    description,
-    name,
-    hasImage: !!file,
-  });
 
   let imageUrl = null;
   let imageId = null;
