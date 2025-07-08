@@ -2,71 +2,71 @@
 
 
     <body style="margin-top: 10vh;">
-        
+
         <%- include('partials/navbar') %>
 
             <div class="container">
                 <h1>Confissões</h1>
                 <hr>
 
-                <%if(perguntas == 0){ %>
-                    
-                        
-                        <h2>Nenhuma pergunta foi realizada</h2></a>
-                <% } %>
+                <%if(perguntas==0){ %>
+                    <h2>Nenhuma pergunta foi realizada</h2></a>
+                    <% } %>
 
-                <% perguntas.forEach(pergunta => { %>
+                        <% perguntas.forEach(pergunta=> { %>
 
 
-                    <br>
-                    <div class="card">
-                        <div class="card-body">
-                            
-                            <div class=" position-absolute" style="right: 0;  top:0; margin : 10px 10px 0 0;  text-align: center; border-radius: 100%; width: 25px; height: 25px; background-color: green;">
-                                <p style="color: white;">                                    
-                                    <%let cont = 0%>
-    
-                                    <%respostas.forEach(resposta => { %>
-    
-                                        <%if(resposta.perguntaID == pergunta.id) {%>
-                                            <%cont++%>
-                                        <%}%>
-    
-                                    <% }) %>
-    
-                                     <%=cont%>
-                                </p>
+                            <br>
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class=" position-absolute"
+                                        style="right: 0;  top:0; margin : 10px 10px 0 0;  text-align: center; border-radius: 100%; width: 25px; height: 25px; background-color: green;">
+                                        <p style="color: white;">
+                                            <%let cont=0%>
+
+                                                <%respostas.forEach(resposta=> { %>
+
+                                                    <%if(resposta.perguntaID==pergunta.id) {%>
+                                                        <%cont++%>
+                                                            <%}%>
+
+                                                                <% }) %>
+
+                                                                    <%=cont%>
+                                        </p>
+                                    </div>
+
+
+                                    <a href='/confissao/<%=pergunta.id%>' target="_blank">
+
+                                        <h3>
+                                            <%=pergunta.title%>
+                                        </h3>
+
+
+                                    </a>
+                                    <p
+                                        style="right: 0; top:0; padding : 5px 10px 0 0; color: gray; margin: 0; font-size: 0.7rem;">
+                                        <%=pergunta.name%> -
+                                            <%=pergunta.createdAt.slice(0,10).split('-').reverse().join(' /')%>
+                                    </p>
+
+                                </div>
+                                <div class="card-footer">
+                                    <p>
+                                        <%=pergunta.description%>
+                                    </p>
+
+                                    <a class="btn btn-dark" href='/confissao/<%=pergunta.id%>'>Responder</a>
+
+                                </div>
                             </div>
- 
 
-                            <a href='/confissao/<%=pergunta.id%>' target="_blank">
-
-                                <h3>
-                                    <%=pergunta.title%>
-                                </h3>
+                            <% }) %>
 
 
-                            </a>
-                            <p  style="right: 0; top:0; padding : 5px 10px 0 0; color: gray; margin: 0; font-size: 0.7rem;">
-                                <%=pergunta.name%> - 
-                                <%=pergunta.createdAt.slice(0,10).split('-').reverse().join('/')%>
-                            </p>
 
-                        </div>
-                        <div class="card-footer">
-                            <p>
-                                <%=pergunta.description%>
-                            </p>
-
-                            <a class="btn btn-dark" href='/confissao/<%=pergunta.id%>'>Responder</a>
-
-                        </div>
-                    </div>
-
-                    <% }) %>
-
-
-                    
 
 
             </div>
@@ -88,8 +88,8 @@
                         console.log('Navegador não suporta notificações.');
                     }
                 });
-                </script>
+            </script>
     </body>
     <%- include('partials/topbottom') %>
 
-    <%- include('partials/footer') %>
+        <%- include('partials/footer') %>

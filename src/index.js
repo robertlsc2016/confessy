@@ -18,9 +18,9 @@ const ImageKit = require("imagekit");
 const upload = multer(); // usa memória (buffer)
 
 const imagekit = new ImageKit({
-  publicKey: "public_4un/BnXuSEkZF8eP7Ja+d0v/7qs=",
-  privateKey: "private_ukFcUoR3fw91LPYFDZggCvbhlzE=",
-  urlEndpoint: "https://ik.imagekit.io/confessy/",
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+  privateKey: process.env.IMAGEKIT_PUBLIC_KEY,
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
 });
 
 // const { sendWhatsAppMessage, initializeWhatsApp } = require("./indexBaileys");
