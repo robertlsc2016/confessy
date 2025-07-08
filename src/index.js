@@ -114,18 +114,16 @@ app.post("/salvarpergunta", upload.single("image"), async (req, res) => {
   try {
     if (file) {
       imageId = uuidv4(); // Gera um ID único
+      const compressedBuffer = file.buffer; // usa buffer original, sem compressão
 
       // const compressedBuffer = await sharp(file.buffer)
       //   .jpeg({ quality: 70 })
       //   .toBuffer();
 
-      // const uploadResult = await imagekit.upload({
-      //   file: compressedBuffer,
-      //   fileName: `img`, // usa o ID no nome
-      // });
-
-      const compressedBuffer = file.buffer; // usa buffer original, sem compressão
-
+      const uploadResult = await imagekit.upload({
+        file: compressedBuffer,
+        fileName: `img`, // usa o ID no nome
+      });
 
       imageUrl = uploadResult.name;
     }
