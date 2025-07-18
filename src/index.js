@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const connection = require("./database/database");
 const Perguntas = require("./database/Perguntas");
 const Respostas = require("./database/Respostas");
+const path = require('path');
 
 const { v4: uuidv4 } = require("uuid");
 
@@ -65,6 +66,12 @@ app.get("/", (req, res) => {
 
 app.get("/confessar", (req, res) => {
   res.render("perguntar");
+});
+
+console.log(path.join(__dirname, "public", "sitemap.xml"));
+
+app.get("/sitemap.xml", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "sitemap.xml"));
 });
 
 app.get("/confissao/:id", (req, res) => {
